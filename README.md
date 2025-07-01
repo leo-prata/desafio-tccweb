@@ -7,6 +7,7 @@
 - [Configuração do Ambiente Local](#configuração-do-ambiente-local)
 - [Testes unitários com Jest no backend](#testes-unitários-com-jest-no-backend)
 - [Containerização com Docker](#containerização-com-docker)
+- [CICD com GitHub Actions](#cicd-com-github-actions)
 
 
 ## Visão Geral
@@ -118,3 +119,16 @@ docker-compose up --build
 
 - O frontend estará acessível em http://localhost:3001
 - O backend estará acessível em http://localhost:3000
+
+# CICD com GitHub Actions
+
+Este projeto utiliza GitHub Actions para automação da Integração Contínua. O workflow configurado está localizado em `.github/workflows/backend-tests.yml` e é responsável por garantir a qualidade e a saúde do código do backend.
+
+O workflow é acionado automaticamente a cada `push` ou `pull request` para a branch principal (`master`) e executa os seguintes passos:
+
+1.  **Checkout do Código**: Baixa a versão mais recente do código do repositório.
+2.  **Setup do Ambiente**: Prepara uma máquina virtual Ubuntu com a versão correta do Node.js (v20).
+3.  **Instalação de Dependências**: Executa `npm install` na pasta do backend, utilizando cache para acelerar o processo em execuções futuras.
+4.  **Execução dos Testes**: Roda o comando `npm run test` para executar toda a suíte de testes unitários do NestJS.
+
+O status do último build (se os testes passaram ou falharam) é exibido pelo badge no topo desta seção.
