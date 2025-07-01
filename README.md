@@ -3,13 +3,11 @@
 
 - [Visão Geral](#visão-geral)
 - [Funcionalidades](#funcionalidades)
-- [Estrutura do Projeto](#estrutura-do-projeto)
 - [Tecnologias Utilizadas](#tecnologias-utilizadas)
 - [Configuração do Ambiente Local](#configuração-do-ambiente-local)
-- [Rodando os Testes](#rodando-os-testes)
+- [Testes unitários com Jest no backend](#testes-unitários-com-jest-no-backend)
 - [Containerização com Docker](#containerização-com-docker)
-- [Próximos Passos](#próximos-passos)
-- [Autor](#autor)
+
 
 ## Visão Geral
 
@@ -45,6 +43,7 @@ A aplicação é um monorepo contendo duas partes principais:
 - **Ícones**: [React Icons](https://react-icons.github.io/react-icons/)
 
 ### DevOps
+- **Containerização**: [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/)
 
 
 # Configuração do Ambiente Local
@@ -106,4 +105,16 @@ npm run dev
 
 ``` sh
 npm run test
-``` 
+```
+
+# Containerização com Docker
+
+Este projeto está totalmente configurado para rodar em um ambiente containerizado com Docker-Compose. Esta é a forma recomendada para garantir consistência entre os ambientes.
+
+### Para subir a aplicação completa com um único comando, na raiz do projeto, execute:
+``` sh
+docker-compose up --build
+```
+
+- O frontend estará acessível em http://localhost:3001
+- O backend estará acessível em http://localhost:3000
