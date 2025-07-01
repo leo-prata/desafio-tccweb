@@ -1,37 +1,33 @@
 FROM node:18-alpine AS base
-
-RUN apk add --no-cache libc6-compat openssl
-
 WORKDIR /app
-
 COPY package*.json ./
-COPY prisma ./prisma/
-
-FROM base AS deps
 RUN npm ci
 
-FROM base AS builder
-COPY --from=deps /app/node_modules ./node_modules
+FROM base AS prisma_generator
 COPY . .
+COPY --from=base /app/node_modules ./node_modules
 
 RUN npx prisma generate
 
+FROM base AS builder
+COPY . .
+COPY --from=base /app/node_modules ./node_modules
 RUN npm run build
-
-RUN npm ci --only=production && npm cache clean --force
 
 FROM node:18-alpine AS runner
 WORKDIR /app
 
-RUN apk add --no-cache libc6-compat openssl
-
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nestjs
 
+COPY --from=base /app/node_modules ./node_modules
+COPY --from=base /app/package*.json ./
+
+COPY --from=prisma_generator /app/node_modules/.prisma/client ./node_modules/.prisma/client
+
+COPY --from=prisma_generator /app/prisma ./prisma
+
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/prisma ./prisma
 
 RUN chown -R nestjs:nodejs /app
 USER nestjs

@@ -35,6 +35,21 @@ services:
     volumes:
       - ./logs:/app/logs
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: http://localhost:3000
+    container_name: react-frontend
+    restart: unless-stopped
+    ports:
+      - "3001:80"
+    depends_on:
+      - app
+    networks:
+      - nestjs-network
+
 volumes:
   postgres_data:
     driver: local

@@ -16,6 +16,7 @@ async function start() {
 			'http://localhost:5173',
 			'http://localhost:4173',
 			'http://localhost:8081',
+			'http://localhost:3001',
 		],
 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 		credentials: true,
